@@ -1,20 +1,24 @@
-import { ModeToggle } from "@/i18n/dark-theme/mode-toggle";
+import { ModeToggle } from "@/components/dark-theme/mode-toggle";
 import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <header className="border-b border-gray-800">
+    <header className="border-b">
       <div className="mx-auto flex justify-between px-5 py-5 items-center">
         <a href="/" className="text-2xl font-bold">
           Blog
         </a>
         <nav>
-          <ul className="font-bold flex list-none gap-3 text-lg">
+          <ul className="font-normal flex list-none gap-3 text-base">
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink className="text-muted-foreground" to="/">
+                Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="about">About</NavLink>
+              <NavLink className="text-muted-foreground" to="about">
+                About
+              </NavLink>
             </li>
           </ul>
         </nav>

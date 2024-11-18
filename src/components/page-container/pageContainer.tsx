@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
 
 export const PageContainer: React.FC<PropsWithChildren> = ({ children }) => {
-  return <main>{children}</main>;
+  return <main className="px-5 h-full">{children}</main>;
 };

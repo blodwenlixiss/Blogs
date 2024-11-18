@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { DefaultLayout } from "./components/default-layout/defaultLayout";
 import { Articles } from "./pages/home/components/card";
+import { LoginPage } from "./pages/login";
+import { RegisterPage } from "./pages/register";
 
 function App() {
   return (
@@ -9,10 +11,10 @@ function App() {
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<Articles />} />
           <Route path="/about" element="" />
-          <Route path="/login" element="" />
-          <Route path="/register" element="" />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="*" element={<h1>404 - Page Not Found</h1>} />
         </Route>
-        <Route path="*" element={<span>not found</span>} />
       </Routes>
     </>
   );
