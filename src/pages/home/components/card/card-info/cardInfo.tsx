@@ -7,7 +7,7 @@ export const CardInfo = () => {
   });
 
   return (
-    <div className="text-white">
+    <div className="article-container">
       <h2 className="text-5xl mb-5 font-bold">Title</h2>
       <ul className="flex gap-4 text-slate-500">
         <li>
