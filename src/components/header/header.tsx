@@ -1,6 +1,6 @@
 export const Header = () => {
   return (
-    <header>
+    <header className="border-b border-gray-800">
       <div className=" mx-auto flex justify-between text-white px-5 py-5 items-center">
         <a href="/" className="text-2xl font-bold">
           Blog
