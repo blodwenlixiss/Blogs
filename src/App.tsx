@@ -3,6 +3,7 @@ import { DefaultLayout } from "./components/default-layout/defaultLayout";
 import { Articles } from "./pages/home/components/card";
 import { LoginPage } from "./pages/login";
 import { RegisterPage } from "./pages/register";
+import { AboutPage } from "./pages/about/components/about";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
       <Routes>
         <Route element={<DefaultLayout />}>
           <Route path="/" element={<Articles />} />
-          <Route path="/about" element="" />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<h1>404 - Page Not Found</h1>} />
