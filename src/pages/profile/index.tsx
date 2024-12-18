@@ -6,23 +6,26 @@ import { userAtom } from "@/store/auth";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { useMutation } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { UpdateInfo } from "./index.types";
 
 export const Profile = () => {
   const [user] = useAtom(userAtom);
-  const [profilePayload, setProfilePayload] = useState<{
-    avatar_url: string;
-    full_nameKa: string;
-    full_nameEn: string;
-    phone: string;
-  }>({
-    avatar_url: "",
-    full_nameKa: "",
-    full_nameEn: "",
-    phone: "",
+
+  const profilePayload: UpdateInfo = {
+    avatar_url: user?.avatar_url || "",
+    full_nameKa: user?.full_nameKa || "",
+    full_nameEn: user?.full_nameEn || "",
+    phone: user?.phone || "",
+  };
+
+  const { control, handleSubmit } = useForm<UpdateInfo>({
+    defaultValues: profilePayload,
   });
   const navigate = useNavigate();
+
+  // Logout mutation
   const { mutate: handleLogout } = useMutation({
     mutationKey: ["logout"],
     mutationFn: logout,
@@ -31,13 +34,24 @@ export const Profile = () => {
     },
   });
 
-  const { mutate: handleUpdateProfile } = useMutation({
-    mutationKey: ["update-profile"],
+  // Update profile mutation
+  const { mutate: handleUpdateProfile, isSuccess } = useMutation({
+    mutationKey: ["updateProfile"],
     mutationFn: updateProfileInfo,
+    onSuccess: (data) => {
+      console.log("Profile updated successfully:", data);
+      alert("Profile updated successfully!");
+    },
+    onError: (error) => {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile.");
+    },
   });
 
-  const handleUpdate = () => {
-    return handleUpdateProfile({ ...profilePayload, id: user?.user?.id });
+  const handleUpdate = (updateProfileValue: UpdateInfo) => {
+    handleUpdateProfile({
+      ...updateProfileValue,
+    });
   };
 
   return (
@@ -45,65 +59,48 @@ export const Profile = () => {
       <div>
         <ul className="flex flex-col gap-5">
           <li>
-            <Label>Name</Label>
-            <Input
-              name="name"
-              value={profilePayload.full_nameEn}
-              onChange={(e) => {
-                setProfilePayload({
-                  ...profilePayload,
-                  full_nameEn: e.target.value,
-                });
-              }}
-              type="text"
+            <Label>Name (English)</Label>
+            <Controller
+              control={control}
+              name="full_nameEn"
+              render={({ field: { onChange, value } }) => (
+                <Input value={value} onChange={onChange} type="text" />
+              )}
             />
           </li>
           <li>
-            <Label>სახელი</Label>
-            <Input
-              name="სახელი"
-              value={profilePayload.full_nameKa}
-              onChange={(e) => {
-                setProfilePayload({
-                  ...profilePayload,
-                  full_nameKa: e.target.value,
-                });
-              }}
-              type="text"
+            <Label>Name (Georgian)</Label>
+            <Controller
+              control={control}
+              name="full_nameKa"
+              render={({ field: { onChange, value } }) => (
+                <Input value={value} onChange={onChange} type="text" />
+              )}
             />
           </li>
           <li>
-            <Label>ტელეფონი/Phone</Label>
-            <Input
+            <Label>Phone</Label>
+            <Controller
+              control={control}
               name="phone"
-              value={profilePayload.phone}
-              onChange={(e) => {
-                setProfilePayload({
-                  ...profilePayload,
-                  phone: e.target.value,
-                });
-              }}
-              type="text"
+              render={({ field: { onChange, value } }) => (
+                <Input value={value} onChange={onChange} type="text" />
+              )}
             />
           </li>
           <li>
-            <Label>Avatar</Label>
-            <Input
-              name="avatar"
-              value={profilePayload.avatar_url}
-              onChange={(e) => {
-                setProfilePayload({
-                  ...profilePayload,
-                  avatar_url: e.target.value,
-                });
-              }}
-              type="text"
+            <Label>Avatar URL</Label>
+            <Controller
+              control={control}
+              name="avatar_url"
+              render={({ field: { onChange, value } }) => (
+                <Input value={value} onChange={onChange} type="text" />
+              )}
             />
           </li>
         </ul>
-        <Button onClick={handleUpdate} className="mt-5">
-          Update
-        </Button>
+        <Button onClick={handleSubmit(handleUpdate)} className="mt-5"></Button>
+        {isSuccess && <p className="text-green-500 mt-2">Profile Updated!</p>}
       </div>
       <Button onClick={() => handleLogout()}>Logout</Button>
     </div>

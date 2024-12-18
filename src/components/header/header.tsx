@@ -3,11 +3,21 @@ import { ModeToggle } from "@/components/dark-theme/mode-toggle";
 import { userAtom } from "@/store/auth";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
+import i18n from "i18next";
+import { Button } from "../ui/button";
 
 export const Header = () => {
   const [user] = useAtom(userAtom);
   const [name, setName] = useState<string | null>(null);
+  const [langVers, setLangVers] = useState<string>("en");
+  const { t } = useTranslation();
+
+  const handleLangChange = (lang: string) => {
+    setLangVers((prevlang) => (prevlang == "en" ? "ka" : "en"));
+    i18n.changeLanguage(lang);
+  };
 
   useEffect(() => {
     if (user?.user?.id) {
@@ -35,6 +45,11 @@ export const Header = () => {
                 About
               </NavLink>
             </li>
+            {user ? (
+              <NavLink className="text-muted-foreground" to="create_blog">
+                Create blog
+              </NavLink>
+            ) : null}
           </ul>
         </nav>
         <div className="flex gap-3 items-center">
@@ -55,7 +70,12 @@ export const Header = () => {
               Sign In
             </NavLink>
           )}
-          <button>Change Lang</button>
+          <Button
+            className="hover:text-inherit rounded-full w-10 bg-inherit text-inherit"
+            onClick={() => handleLangChange(langVers)}
+          >
+            {t(langVers)}
+          </Button>
           <ModeToggle />
         </div>
       </div>

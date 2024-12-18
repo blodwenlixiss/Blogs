@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { supabase } from "./api";
 import { AuthGuard, ProfileGuard } from "./components/route-guard/auth";
 import { Profile } from "./pages/profile";
+import CreateBlogs from "./pages/create-blog";
 
 function App() {
   const [, setUser] = useAtom(userAtom);
@@ -57,6 +58,7 @@ function App() {
               </AuthGuard>
             }
           />
+          <Route path="/create_blog" element={<CreateBlogs />} />
           <Route
             path="*"
             element={
